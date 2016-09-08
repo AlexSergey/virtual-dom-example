@@ -37,7 +37,7 @@ function removeFromArray(e) {
 function getArray() {
     if (state.array.length > 0) {
         var query = state.array.map((item, index) => <li>{item} <button data-index={index}>X</button></li>);
-        console.log(query);
+
         return VD.make('ul', {onClick: removeFromArray}, ...query);
     }
     return '';
