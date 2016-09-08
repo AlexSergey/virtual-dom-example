@@ -6,23 +6,23 @@ export default class Attributes extends Eents {
         super(props);
     }
 
-    _removeBooleanProp($target, name) {
-        $target.removeAttribute(name);
-        $target[name] = false;
+    _removeBooleanProp(_target, name) {
+        _target.removeAttribute(name);
+        _target[name] = false;
     }
 
-    _removeProp($target, name, value) {
+    _removeProp(_target, name, value) {
         var customProp = this._isCustomProp(name);
         if (customProp) {
-            $target.removeAttribute(customProp);
+            _target.removeAttribute(customProp);
         } else if (typeof value === 'boolean') {
-            this._removeBooleanProp($target, name);
+            this._removeBooleanProp(_target, name);
         } else {
-            $target.removeAttribute(name);
+            _target.removeAttribute(name);
         }
     }
 
-    _setProp($target, name, value) {
+    _setProp(_target, name, value) {
         var customProp = this._isCustomProp(name);
         var isEvent = this._isEventProp(name);
 
@@ -31,12 +31,11 @@ export default class Attributes extends Eents {
         }
 
         if (customProp) {
-            $target.setAttribute(customProp, value);
+            _target.setAttribute(customProp, value);
         } else if (typeof value === 'boolean') {
-            this._setBooleanProp($target, name, value);
+            this._setBooleanProp(_target, name, value);
         } else {
-            console.log(name, String(value));
-            $target.setAttribute(name, String(value));
+            _target.setAttribute(name, String(value));
         }
     }
 
@@ -44,35 +43,36 @@ export default class Attributes extends Eents {
         return customAttributeList[name];
     }
 
-    _setBooleanProp($target, name, value) {
+    _setBooleanProp(_target, name, value) {
         if (typeof value !== 'undefined') {
-            $target.setAttribute(name, value);
-            $target[name] = true;
+            _target.setAttribute(name, value);
+            _target[name] = true;
         } else {
-            $target[name] = false;
+            _target[name] = false;
         }
     }
 
-    _setProps($target, props) {
+    _setProps(_target, props) {
         if (props) {
             Object.keys(props).forEach(name => {
-                this._setProp($target, name, props[name]);
+                this._setProp(_target, name, props[name]);
             });
         }
     }
 
-    _updateProp($target, name, newVal, oldVal) {
+    _updateProp(_target, name, newVal, oldVal) {
         if (typeof newVal === 'undefined') {
-            this._removeProp($target, name, oldVal);
+            this._removeProp(_target, name, oldVal);
         } else if (!oldVal || newVal !== oldVal) {
-            this._setProp($target, name, newVal);
+            this._setProp(_target, name, newVal);
         }
     }
 
-    _updateProps($target, newProps, oldProps = {}) {
+    _updateProps(_target, newProps, oldProps = {}) {
         const props = Object.assign({}, newProps, oldProps);
-            Object.keys(props).forEach(name => {
-                this._updateProp($target, name, newProps[name], oldProps[name]);
+        
+        Object.keys(props).forEach(name => {
+            this._updateProp(_target, name, newProps[name], oldProps[name]);
         });
     }
 }

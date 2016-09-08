@@ -15,36 +15,36 @@ export default class ChangeDetector extends Attributes {
         if (typeof node === 'string') {
             return document.createTextNode(node);
         }
-        const $el = document.createElement(node.type);
+        const _el = document.createElement(node.type);
 
-        this._setProps($el, node.props);
-        this._addEventListeners($el, node.props);
+        this._setProps(_el, node.props);
+        this._addEventListeners(_el, node.props);
 
         node.children
             .map(this._createElement.bind(this))
-            .forEach($el.appendChild.bind($el));
+            .forEach(_el.appendChild.bind(_el));
 
-        return $el;
+        return _el;
     }
 
-    _detection($parent, newNode, oldNode, index = 0) {
+    _detection(_parent, newNode, oldNode, index = 0) {
         if (!oldNode) {
-            $parent.appendChild(this._createElement(newNode));
+            _parent.appendChild(this._createElement(newNode));
         } else if (!newNode) {
             //If new node has been removed we need remove in DOM too
-            $parent.removeChild($parent.childNodes[index]);
+            _parent.removeChild(_parent.childNodes[index]);
         } else if (this._changed(newNode, oldNode)) {
             //If old and new nodes will be changed we need replace it to new node
-            $parent.replaceChild(this._createElement(newNode), $parent.childNodes[index]);
+            _parent.replaceChild(this._createElement(newNode), _parent.childNodes[index]);
         } else if (newNode.type) {
             //Update attributes
             this._updateProps(
-                $parent.childNodes[index],
+                _parent.childNodes[index],
                 newNode.props,
                 oldNode.props
             );
             this._updateEvents(
-                $parent.childNodes[index],
+                _parent.childNodes[index],
                 newNode.props,
                 oldNode.props
             );
@@ -54,7 +54,7 @@ export default class ChangeDetector extends Attributes {
 
             for (let i = 0; i < newLength || i < oldLength; i++) {
                 this._detection(
-                    $parent.childNodes[index],
+                    _parent.childNodes[index],
                     newNode.children[i],
                     oldNode.children[i],
                     i
